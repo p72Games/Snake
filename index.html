@@ -25,6 +25,7 @@
     text-align:center;
     min-height:100dvh;
     display:flex;
+    flex-direction:column;
     align-items:center;
     justify-content:center;
     padding:20px;
@@ -40,6 +41,7 @@
       inset 0 0 30px rgba(0,229,255,.15);
     background: rgba(0,0,0,.55);
     backdrop-filter: blur(4px);
+    margin-bottom:20px;
   }
   h1{
     margin:0 0 6px;
@@ -51,12 +53,11 @@
       0 0 36px var(--accent);
     letter-spacing: .06em;
   }
-  h2.subtitle{
-    margin:0 0 14px;
-    font-size:clamp(16px,4vw,22px);
-    color:#66ffe0;
-    text-shadow: 0 0 6px var(--fg);
-    font-weight:400;
+  .subtitle{
+    font-size:16px;
+    color:#00e5ff;
+    margin-bottom:16px;
+    opacity:.85;
   }
   .row{display:flex; gap:16px; justify-content:center; flex-wrap:wrap; margin-top:8px}
   .menu, .game{display:none}
@@ -164,17 +165,18 @@
     box-shadow:0 0 18px rgba(0,229,255,.45);
   }
   footer{
-    margin-top:20px;
+    margin-top:10px;
+    color:#00e5ff;
     font-size:14px;
-    color:#66ffe0;
-    text-shadow: 0 0 4px var(--fg);
+    letter-spacing:.06em;
+    text-shadow: 0 0 6px #00ff88;
   }
 </style>
 </head>
 <body>
   <div class="frame">
     <h1>🐍 Snake Arcade</h1>
-    <h2 class="subtitle">Dominion Games</h2>
+    <div class="subtitle">Classic Neon Arcade Snake</div>
 
     <!-- MENU -->
     <div id="menu" class="menu active">
@@ -229,15 +231,146 @@
     <!-- AdSense ad -->
     <ins class="adsbygoogle"
          style="display:block; text-align:center;"
-         data-ad-format="auto"
-         data-full-width-responsive="true"
          data-ad-client="ca-pub-7172412535146248"
-         data-ad-slot="1234567890"></ins>
+         data-ad-slot="1234567890"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
     <script>
-         (adsbygoogle = window.adsbygoogle || []).push({});
+      (adsbygoogle = window.adsbygoogle || []).push({});
     </script>
-
-    <footer>Dominion Games</footer>
   </div>
+
+  <footer>Dominion Games</footer>
+
+<script>
+let canvas = document.getElementById('snakeCanvas');
+let ctx = canvas.getContext('2d');
+
+let snake, dir, food, score, speed, gameLoopId;
+let paused = false;
+
+function startGame(difficulty){
+  snake = [{x:10,y:10}];
+  dir = {x:0,y:0};
+  spawnFood();
+  score = 0;
+  speed = difficulty === 'easy' ? 200 : difficulty === 'normal' ? 120 : 80;
+  document.getElementById('score').textContent = 'Score: 0';
+  document.getElementById('diffTag').textContent = 'Difficulty: ' + difficulty.charAt(0).toUpperCase() + difficulty.slice(1);
+  document.getElementById('menu').classList.remove('active');
+  document.getElementById('game').classList.add('active');
+  paused = false;
+  clearInterval(gameLoopId);
+  gameLoopId = setInterval(gameLoop, speed);
+}
+
+function gameLoop(){
+  if(paused) return;
+  let head = {...snake[0]};
+  head.x += dir.x;
+  head.y += dir.y;
+
+  // Wrap around walls
+  if(head.x < 0) head.x = 19;
+  if(head.x > 19) head.x = 0;
+  if(head.y < 0) head.y = 19;
+  if(head.y > 19) head.y = 0;
+
+  // Check collision
+  if(snake.some(seg=>seg.x===head.x && seg.y===head.y)){
+    gameOver();
+    return;
+  }
+
+  snake.unshift(head);
+
+  // Eat food
+  if(head.x===food.x && head.y===food.y){
+    score++;
+    spawnFood();
+    document.getElementById('score').textContent = 'Score: ' + score;
+  } else {
+    snake.pop();
+  }
+
+  draw();
+}
+
+function draw(){
+  ctx.fillStyle='#06191b';
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  // food
+  ctx.fillStyle='#ff3366';
+  ctx.fillRect(food.x*20, food.y*20, 20,20);
+
+  // snake
+  ctx.fillStyle='#00ff88';
+  snake.forEach(seg=>{
+    ctx.fillRect(seg.x*20, seg.y*20, 20,20);
+  });
+}
+
+function spawnFood(){
+  let valid = false;
+  while(!valid){
+    food = {x:Math.floor(Math.random()*20), y:Math.floor(Math.random()*20)};
+    if(!snake.some(seg=>seg.x===food.x && seg.y===food.y)) valid=true;
+  }
+}
+
+function pauseResume(){
+  paused = !paused;
+  document.getElementById('pauseBtn').textContent = paused?'Resume':'Pause';
+}
+
+function quitToMenu(){
+  clearInterval(gameLoopId);
+  document.getElementById('game').classList.remove('active');
+  document.getElementById('menu').classList.add('active');
+}
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowUp'||e.key==='w'){dir={x:0,y:-1}}
+  if(e.key==='ArrowDown'||e.key==='s'){dir={x:0,y:1}}
+  if(e.key==='ArrowLeft'||e.key==='a'){dir={x:-1,y:0}}
+  if(e.key==='ArrowRight'||e.key==='d'){dir={x:1,y:0}}
+  if(e.key==='p') pauseResume();
+});
+
+function gameOver(){
+  clearInterval(gameLoopId);
+  document.getElementById('overlay').classList.add('show');
+  document.getElementById('finalScore').textContent = 'Your Score: ' + score;
+}
+
+function clearScores(){
+  localStorage.removeItem('snakeScores');
+  document.getElementById('leaderList').innerHTML = '';
+}
+
+// Leaderboard handling
+function updateLeaderboard(){
+  let scores = JSON.parse(localStorage.getItem('snakeScores')||'[]');
+  let ol = document.getElementById('leaderList');
+  ol.innerHTML = '';
+  scores.sort((a,b)=>b.score-a.score).slice(0,10).forEach(entry=>{
+    let li = document.createElement('li');
+    li.textContent = entry.name || 'Anonymous';
+    let span = document.createElement('span');
+    span.textContent = entry.score;
+    li.appendChild(span);
+    ol.appendChild(li);
+  });
+}
+
+window.addEventListener('beforeunload',()=>{
+  let scores = JSON.parse(localStorage.getItem('snakeScores')||'[]');
+  scores.push({name:document.getElementById('playerName').value, score});
+  localStorage.setItem('snakeScores', JSON.stringify(scores));
+});
+
+setInterval(updateLeaderboard,1000);
+</script>
 </body>
 </html>
