@@ -61,3 +61,113 @@
       // Draw food
       ctx.fillStyle = "red";
       ctx.fillRect(food.x*20, food.y*20, 18, 18);
+
+      // Move snake
+      let head = {...snake[0]};
+      if (direction === "UP") head.y--;
+      if (direction === "DOWN") head.y++;
+      if (direction === "LEFT") head.x--;
+      if (direction === "RIGHT") head.x++;
+
+      // Check game over
+      if (head.x < 0 || head.x >= 20 || head.y < 0 || head.y >= 20 || snake.some(p => p.x===head.x && p.y===head.y)) {
+        gameOver();
+        return;
+      }
+
+      snake.unshift(head);
+
+      if (head.x === food.x && head.y === food.y) {
+        score++;
+        document.getElementById("score").innerText = "Score: " + score;
+        food = {x: Math.floor(Math.random()*20), y: Math.floor(Math.random()*20)};
+      } else {
+        snake.pop();
+      }
+    }
+
+    function changeDirection(e) {
+      if (e.key === "ArrowUp" && direction !== "DOWN") direction = "UP";
+      if (e.key === "ArrowDown" && direction !== "UP") direction = "DOWN";
+      if (e.key === "ArrowLeft" && direction !== "RIGHT") direction = "LEFT";
+      if (e.key === "ArrowRight" && direction !== "LEFT") direction = "RIGHT";
+    }
+    document.addEventListener("keydown", changeDirection);
+
+    function gameOver() {
+      clearInterval(gameInterval);
+      saveScore(playerName, score);
+      endGame();
+    }
+
+    function endGame() {
+      document.getElementById("game").style.display = "none";
+      document.getElementById("menu").style.display = "block";
+      loadLeaderboard();
+    }
+
+    function saveScore(name, score) {
+      let scores = JSON.parse(localStorage.getItem("snakeScores") || "[]");
+      scores.push({name, score});
+      scores.sort((a,b) => b.score - a.score);
+      scores = scores.slice(0,5); // keep top 5
+      localStorage.setItem("snakeScores", JSON.stringify(scores));
+    }
+
+    function loadLeaderboard() {
+      let scores = JSON.parse(localStorage.getItem("snakeScores") || "[]");
+      let list = document.getElementById("leaderboard");
+      list.innerHTML = "";
+      scores.forEach(s => {
+        let li = document.createElement("li");
+        li.innerText = `${s.name}: ${s.score}`;
+        list.appendChild(li);
+      });
+    }
+
+    loadLeaderboard();
+  </script>
+</body>
+</html>
+
+body {
+  background: black;
+  color: lime;
+  font-family: 'Courier New', monospace;
+  text-align: center;
+}
+
+h1 {
+  font-size: 3em;
+  color: cyan;
+  text-shadow: 0 0 10px lime, 0 0 20px cyan;
+}
+
+button {
+  background: black;
+  color: lime;
+  border: 2px solid cyan;
+  padding: 10px 20px;
+  margin: 5px;
+  cursor: pointer;
+  font-size: 1.2em;
+  border-radius: 5px;
+}
+
+button:hover {
+  background: lime;
+  color: black;
+}
+
+canvas {
+  border: 3px solid cyan;
+  margin-top: 20px;
+}
+
+#leaderboard {
+  list-style: none;
+  padding: 0;
+  font-size: 1.2em;
+  margin: 10px auto;
+  max-width: 200px;
+}
