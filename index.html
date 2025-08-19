@@ -42,7 +42,7 @@
     backdrop-filter: blur(4px);
   }
   h1{
-    margin:0 0 14px;
+    margin:0 0 6px;
     font-size: clamp(28px, 6vw, 42px);
     color:#a0fff2;
     text-shadow:
@@ -50,6 +50,13 @@
       0 0 24px var(--accent),
       0 0 36px var(--accent);
     letter-spacing: .06em;
+  }
+  h2.subtitle{
+    margin:0 0 14px;
+    font-size:clamp(16px,4vw,22px);
+    color:#66ffe0;
+    text-shadow: 0 0 6px var(--fg);
+    font-weight:400;
   }
   .row{display:flex; gap:16px; justify-content:center; flex-wrap:wrap; margin-top:8px}
   .menu, .game{display:none}
@@ -156,11 +163,18 @@
     width:min(360px, 92vw);
     box-shadow:0 0 18px rgba(0,229,255,.45);
   }
+  footer{
+    margin-top:20px;
+    font-size:14px;
+    color:#66ffe0;
+    text-shadow: 0 0 4px var(--fg);
+  }
 </style>
 </head>
 <body>
   <div class="frame">
     <h1>🐍 Snake Arcade</h1>
+    <h2 class="subtitle">Dominion Games</h2>
 
     <!-- MENU -->
     <div id="menu" class="menu active">
@@ -214,15 +228,16 @@
 
     <!-- AdSense ad -->
     <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-7172412535146248"
-         data-ad-slot="1234567890"
+         style="display:block; text-align:center;"
          data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
+         data-full-width-responsive="true"
+         data-ad-client="ca-pub-7172412535146248"
+         data-ad-slot="1234567890"></ins>
     <script>
          (adsbygoogle = window.adsbygoogle || []).push({});
     </script>
 
+    <footer>Dominion Games</footer>
   </div>
 </body>
 </html>
