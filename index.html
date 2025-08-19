@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Snake Arcade</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="menu" id="menu">
+    <h1>🐍 Snake Arcade</h1>
+    <input type="text" id="playerName" placeholder="Enter your name">
+    <h2>Select Difficulty</h2>
+    <button onclick="startGame('easy')">Easy</button>
+    <button onclick="startGame('normal')">Normal</button>
+    <button onclick="startGame('hard')">Hard</button>
+
+    <h2>Leaderboard</h2>
+    <ul id="leaderboard"></ul>
+  </div>
+
+  <div class="game" id="game" style="display:none;">
+    <h2 id="score">Score: 0</h2>
+    <canvas id="snakeCanvas" width="400" height="400"></canvas>
+    <button onclick="endGame()">🏠 Home</button>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("snakeCanvas");
+    const ctx = canvas.getContext("2d");
+
+    let snake, direction, food, score, gameInterval, speed, playerName;
+
+    function startGame(difficulty) {
+      playerName = document.getElementById("playerName").value.trim() || "Player";
+      document.getElementById("menu").style.display = "none";
+      document.getElementById("game").style.display = "block";
+
+      // Difficulty speeds
+      speed = difficulty === "easy" ? 200 : difficulty === "normal" ? 120 : 80;
+
+      snake = [{x: 10, y: 10}];
+      direction = "RIGHT";
+      food = {x: 5, y: 5};
+      score = 0;
+
+      document.getElementById("score").innerText = "Score: " + score;
+
+      clearInterval(gameInterval);
+      gameInterval = setInterval(drawGame, speed);
+    }
+
+    function drawGame() {
+      ctx.fillStyle = "black";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Draw snake
+      ctx.fillStyle = "lime";
+      snake.forEach(part => ctx.fillRect(part.x*20, part.y*20, 18, 18));
+
+      // Draw food
+      ctx.fillStyle = "red";
+      ctx.fillRect(food.x*20, food.y*20, 18, 18);
