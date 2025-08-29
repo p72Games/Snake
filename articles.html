@@ -1,62 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Articles — Dominion Games</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Articles | Dominion Games</title>
+
 <style>
-:root{--bg:#000;--fg:#00ff88;--accent:#00e5ff}
-body{margin:0;background:radial-gradient(1200px 1200px at 50% 10%,#00121a 0%,#000 60%);color:var(--fg);font-family:"Courier New",monospace;padding:20px;min-height:100vh;text-align:center}
-.container{max-width:900px;margin:0 auto}
-h1{color:#a0fff2;text-shadow:0 0 10px var(--fg),0 0 24px var(--accent)}
-.card{background:rgba(0,0,0,.6);border:2px solid var(--accent);border-radius:12px;padding:20px;margin:18px 0;box-shadow:0 0 12px var(--accent);text-align:left}
-.card h2{margin:0 0 10px;color:var(--accent)}
-.card p{margin:0 0 12px;line-height:1.6}
-.nav-btn{display:inline-block;background:linear-gradient(45deg,var(--accent),var(--fg));border:3px solid var(--fg);border-radius:20px;padding:12px 20px;color:#000;text-decoration:none;font-weight:bold;margin:10px}
-footer{margin-top:30px;opacity:.8}
+:root{
+  --bg:#000;
+  --fg:#00ff88;
+  --accent:#00e5ff;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background: radial-gradient(1200px 1200px at 50% 10%, #00121a 0%, #000 60%);
+  color:var(--fg);
+  font-family:"Courier New", monospace;
+  text-align:center;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:20px;
+}
+h1{
+  font-size:clamp(28px,6vw,48px);
+  margin-bottom:20px;
+  color:#a0fff2;
+  text-shadow:0 0 10px var(--fg),0 0 24px var(--accent);
+}
+.articles-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:20px;
+  width:100%;
+  max-width:900px;
+}
+.article-card{
+  background: rgba(0,0,0,.6);
+  border:2px solid var(--accent);
+  border-radius:16px;
+  padding:20px;
+  cursor:pointer;
+  transition:transform .2s, box-shadow .2s;
+  text-align:center;
+  box-shadow:0 0 12px var(--accent);
+}
+.article-card:hover{
+  transform: translateY(-4px);
+  box-shadow:0 0 18px var(--accent);
+}
+.article-card h2{
+  margin:10px 0;
+  font-size:18px;
+  color:var(--fg);
+}
+.article-card p{
+  font-size:14px;
+  color:var(--accent);
+  opacity:0.8;
+}
+.back-button {
+  margin-top: 30px;
+  background: linear-gradient(45deg, var(--accent), var(--fg));
+  border: 3px solid var(--fg);
+  border-radius: 24px;
+  padding: 15px 30px;
+  cursor: pointer;
+  transition: transform .2s, box-shadow .2s;
+  text-align: center;
+  box-shadow: 0 0 15px var(--fg), 0 0 25px var(--accent);
+}
+.back-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px var(--fg), 0 0 30px var(--accent);
+}
+.back-button h2 {
+  margin: 0;
+  font-size: 20px;
+  color: var(--bg);
+  text-shadow: 0 0 5px var(--accent);
+}
+footer{
+  margin-top:40px;
+  font-size:14px;
+  opacity:.7;
+}
 </style>
 </head>
 <body>
-<div class="container">
-  <h1>Dominion Articles</h1>
 
-  <div class="card">
-    <h2>About these articles</h2>
-    <p>Welcome — this collection explores how the lordship of Jesus shapes life, work, culture and community. These pieces are written to help you think about faith and influence, and to provide original content for visitors to Dominion Games. If you’re using a sister site for longer-form content, these pages can link there and bring traffic across.</p>
-    <p>Click any article below to read in full. Each article includes scripture references and practical application you can use on your site or share with others.</p>
+<h1>Articles</h1>
+
+<div class="articles-grid">
+  <div class="article-card" onclick="window.location.href='article-jesus-is-lord.html'">
+    <h2>Jesus is Lord of All</h2>
+    <p>The Kingdom of God expands like leaven through every part of life.</p>
   </div>
-
-  <div class="card">
-    <h2><a href="article-1.html" style="color:var(--accent);text-decoration:none">1. Jesus is Lord of All</a></h2>
-    <p>An accessible, scripturally grounded piece about Christ's universal lordship and why it matters for believers and culture.</p>
+  <div class="article-card" onclick="window.location.href='article-ever-expanding-kingdom.html'">
+    <h2>The Ever-Expanding Kingdom</h2>
+    <p>From Daniel and Isaiah: the Kingdom that grows without end.</p>
   </div>
-
-  <div class="card">
-    <h2><a href="article-2.html" style="color:var(--accent);text-decoration:none">2. The Ever-Expanding Kingdom</a></h2>
-    <p>Explores biblical images from Daniel and Isaiah and Jesus’ parables that show how God's kingdom grows and transforms from within.</p>
+  <div class="article-card" onclick="window.location.href='article-christian-shoemaker.html'">
+    <h2>The Christian Shoemaker</h2>
+    <p>Martin Luther’s story of how Christian work means excellence and love.</p>
   </div>
-
-  <div class="card">
-    <h2><a href="article-3.html" style="color:var(--accent);text-decoration:none">3. Faith in Everyday Work</a></h2>
-    <p>The shoemaker story (Martin Luther) and the theology of vocation: how excellent, faithful work is a witness to the world.</p>
-  </div>
-
-  <div class="card">
-    <h2><a href="article-4.html" style="color:var(--accent);text-decoration:none">4. Leaven in the World</a></h2>
-    <p>A deep dive into the parable of the leaven and practical ways believers can influence families, communities and culture.</p>
-  </div>
-
-  <div class="card">
-    <h2><a href="article-5.html" style="color:var(--accent);text-decoration:none">5. Why Dominion Matters</a></h2>
-    <p>Ties the themes together and explains the vision behind Dominion Games — stewardship, joy, creativity and faithful influence.</p>
-  </div>
-
-  <div style="margin-top:18px">
-    <a class="nav-btn" href="index.html">⬅ Back to Arcade</a>
-    <a class="nav-btn" href="https://yoursistersite.example" target="_blank">Visit our sister site</a>
-  </div>
-
-  <footer>Dominion Games</footer>
 </div>
+
+<div class="back-button" onclick="window.location.href='index.html'">
+  <h2>⬅ Back to Games</h2>
+</div>
+
+<footer>Dominion Games</footer>
+
 </body>
 </html>
