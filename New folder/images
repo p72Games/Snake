@@ -1,7 +1,4 @@
-your-repo/
-│
-├─ index.html          ← your HTML file
-├─ articles.html       ← other page
-└─ images/             ← folder for images
-   ├─ jesus-world.jpg
-   └─ leaven-bread.jpg
+/website-root
+   article-jesus-is-lord.html
+   /images
+       jesus-world.jpg
