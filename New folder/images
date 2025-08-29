@@ -1,0 +1,7 @@
+your-repo/
+│
+├─ index.html          ← your HTML file
+├─ articles.html       ← other page
+└─ images/             ← folder for images
+   ├─ jesus-world.jpg
+   └─ leaven-bread.jpg
