@@ -6,86 +6,66 @@
 <title>Articles | Dominion Games</title>
 
 <style>
-:root{
-  --bg:#000;
-  --fg:#00ff88;
-  --accent:#00e5ff;
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f5f5f5;
+  color: #111;
+  text-align: center;
+  padding: 20px;
 }
-*{box-sizing:border-box}
-body{
-  margin:0;
-  background: radial-gradient(1200px 1200px at 50% 10%, #00121a 0%, #000 60%);
-  color:var(--fg);
-  font-family:"Courier New", monospace;
-  text-align:center;
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  padding:20px;
+h1 {
+  font-size: 2.5em;
+  margin-bottom: 30px;
+  color: #004d26;
 }
-h1{
-  font-size:clamp(28px,6vw,48px);
-  margin-bottom:20px;
-  color:#a0fff2;
-  text-shadow:0 0 10px var(--fg),0 0 24px var(--accent);
+.articles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  max-width: 900px;
+  margin: 0 auto 40px auto;
 }
-.articles-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:20px;
-  width:100%;
-  max-width:900px;
+.article-card {
+  background: #fff;
+  border: 2px solid #00a86b;
+  border-radius: 12px;
+  padding: 20px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  text-align: left;
 }
-.article-card{
-  background: rgba(0,0,0,.6);
-  border:2px solid var(--accent);
-  border-radius:16px;
-  padding:20px;
-  cursor:pointer;
-  transition:transform .2s, box-shadow .2s;
-  text-align:center;
-  box-shadow:0 0 12px var(--accent);
-}
-.article-card:hover{
+.article-card:hover {
   transform: translateY(-4px);
-  box-shadow:0 0 18px var(--accent);
+  box-shadow: 0 0 12px rgba(0, 168, 107, 0.5);
 }
-.article-card h2{
-  margin:10px 0;
-  font-size:18px;
-  color:var(--fg);
+.article-card h2 {
+  margin: 0 0 10px 0;
+  font-size: 1.2em;
+  color: #004d26;
 }
-.article-card p{
-  font-size:14px;
-  color:var(--accent);
-  opacity:0.8;
+.article-card p {
+  font-size: 0.95em;
+  color: #333;
 }
 .back-button {
+  display: inline-block;
   margin-top: 30px;
-  background: linear-gradient(45deg, var(--accent), var(--fg));
-  border: 3px solid var(--fg);
-  border-radius: 24px;
-  padding: 15px 30px;
-  cursor: pointer;
-  transition: transform .2s, box-shadow .2s;
-  text-align: center;
-  box-shadow: 0 0 15px var(--fg), 0 0 25px var(--accent);
+  background: #00a86b;
+  color: #fff;
+  text-decoration: none;
+  padding: 12px 25px;
+  border-radius: 12px;
+  font-size: 1em;
+  transition: background 0.2s;
 }
 .back-button:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 20px var(--fg), 0 0 30px var(--accent);
+  background: #00764d;
 }
-.back-button h2 {
-  margin: 0;
-  font-size: 20px;
-  color: var(--bg);
-  text-shadow: 0 0 5px var(--accent);
-}
-footer{
-  margin-top:40px;
-  font-size:14px;
-  opacity:.7;
+footer {
+  margin-top: 50px;
+  font-size: 14px;
+  color: #555;
 }
 </style>
 </head>
@@ -96,21 +76,19 @@ footer{
 <div class="articles-grid">
   <div class="article-card" onclick="window.location.href='article-jesus-is-lord.html'">
     <h2>Jesus is Lord of All</h2>
-    <p>The Kingdom of God expands like leaven through every part of life.</p>
+    <p>Discover how Christ’s Kingdom expands and touches every part of life.</p>
   </div>
   <div class="article-card" onclick="window.location.href='article-ever-expanding-kingdom.html'">
     <h2>The Ever-Expanding Kingdom</h2>
-    <p>From Daniel and Isaiah: the Kingdom that grows without end.</p>
+    <p>Insights from Daniel and Isaiah on the growth of God’s Kingdom.</p>
   </div>
   <div class="article-card" onclick="window.location.href='article-christian-shoemaker.html'">
     <h2>The Christian Shoemaker</h2>
-    <p>Martin Luther’s story of how Christian work means excellence and love.</p>
+    <p>The story of Martin Luther’s shoemaker who let faith guide his craftsmanship.</p>
   </div>
 </div>
 
-<div class="back-button" onclick="window.location.href='index.html'">
-  <h2>⬅ Back to Games</h2>
-</div>
+<a class="back-button" href="index.html">⬅ Back to Games</a>
 
 <footer>Dominion Games</footer>
 
