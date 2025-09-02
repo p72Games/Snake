@@ -139,9 +139,9 @@
     const pillarSpeed = 2;
     let frameCount = 0;
 
-    // Gap settings (now mixed: some narrow, some wide)
+    // Gap settings
     const minGap = 120;   // never too tiny
-    const maxGap = 280;   // nice wide ones too
+    const maxGap = 280;   // some nice wide ones
 
     // High score
     let highScore = localStorage.getItem('assaultCourseHighScore') || 0;
@@ -155,13 +155,22 @@
       }
     }
 
-    // Add pillar
-    function addPillar() {
+    // Add pillar with safety checks
+    function addPillar(isFirst = false) {
+      if (isFirst) {
+        // First pillar = wide, centered, always fair
+        const gapSize = 220;
+        const gapY = (canvas.height - gapSize) / 2;
+        pillars.push({ x: canvas.width, gapY, gapSize, passed: false });
+        return;
+      }
+
       const gapSize = Math.random() * (maxGap - minGap) + minGap;
-      const minGapY = 50;
-      const maxGapY = canvas.height - gapSize - 50;
-      const gapY = Math.random() * (maxGapY - minGapY) + minGapY;
-      pillars.push({ x: canvas.width, gapY: gapY, gapSize: gapSize, passed: false });
+      const safeMargin = 60; // never let gap touch the top/bottom
+      const maxGapY = Math.max(safeMargin, canvas.height - gapSize - safeMargin);
+      const gapY = Math.random() * (maxGapY - safeMargin) + safeMargin;
+
+      pillars.push({ x: canvas.width, gapY, gapSize, passed: false });
     }
 
     // Handle input
@@ -186,7 +195,7 @@
       gameOverScreen.style.display = 'none';
       gameRunning = true;
       frameCount = 0;
-      addPillar();
+      addPillar(true); // restart with a fair pillar
       gameLoop();
     });
 
@@ -256,7 +265,7 @@
     }
 
     // Start game
-    addPillar();
+    addPillar(true); // first one always fair
     gameLoop();
   </script>
 </body>
