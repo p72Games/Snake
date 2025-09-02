@@ -94,19 +94,31 @@
   .touchBtn{
     background:#022;
     border:1px solid var(--accent);
-    padding:28px;          /* bigger button */
+    padding:28px;
     border-radius:50%;
-    font-size:26px;        /* bigger arrow symbol */
+    font-size:26px;
     color:var(--fg);
     user-select:none;
   }
-  /* Extra boost on small screens */
   @media (max-width:600px){
     .touchBtn{
       padding:36px;
       font-size:32px;
     }
   }
+  /* Article snippet */
+  .article-snippet {
+    max-width:900px;
+    margin:20px auto;
+    padding:20px;
+    background:#06191b;
+    border:2px solid var(--accent);
+    border-radius:16px;
+    color:#00ff88;
+    text-align:left;
+    line-height:1.6;
+  }
+  .article-snippet h2 {text-align:center; color:#a0fff2; margin-bottom:12px;}
 </style>
 </head>
 <body>
@@ -149,6 +161,20 @@
         <button class="btn" onclick="goHome()">🏠 Home</button>
       </div>
     </div>
+  </div>
+
+  <!-- Article Section -->
+  <div class="article-snippet">
+    <h2>Snake Arcade: Fun, Focus, and Faith</h2>
+    <p>
+      The classic game of Snake is more than just a fun way to pass time. At Dominion Games, we believe that even simple games can provide moments of focus, challenge, and joy that honor God’s gift of creativity and play. Snake encourages strategic thinking, hand-eye coordination, and careful planning as players navigate the growing snake through the grid without colliding with walls or itself.
+    </p>
+    <p>
+      Playing Snake also teaches patience and persistence. Each attempt is a fresh opportunity to improve, mirroring life’s lessons that growth often comes through repeated effort and learning from mistakes. Whether playing solo or with family nearby, this game promotes wholesome engagement and can be a small but meaningful way to unwind responsibly.
+    </p>
+    <p>
+      Our hope is that games like Snake are not merely distractions, but tools for mental stimulation, relaxation, and even teaching children about focus and patience. With simple rules and increasing challenges, Snake is a timeless game that balances fun with skill development. Dominion Games encourages using play as a way to refresh, recharge, and appreciate the joy God has woven into creation.
+    </p>
   </div>
 
   <!-- AdSense placeholder -->
@@ -220,7 +246,6 @@ function changeDir(key){
   if(key==="ArrowRight"&&dir.x!==-1) dir={x:1,y:0};
 }
 
-// Prevent page scroll on arrow keys
 document.addEventListener("keydown",e=>{
   if(["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].includes(e.key)){
     e.preventDefault();
@@ -228,9 +253,7 @@ document.addEventListener("keydown",e=>{
   }
 });
 
-function togglePause(){
-  paused=!paused;
-}
+function togglePause(){ paused=!paused; }
 
 function gameOver(){
   clearInterval(gameLoop);
@@ -244,9 +267,7 @@ function quitToMenu(){
   renderLeaderboard();
 }
 
-function goHome(){
-  window.location.href = "index.html";
-}
+function goHome(){ window.location.href = "index.html"; }
 
 function saveScore(name,score){
   let scores=JSON.parse(localStorage.getItem("snakeScores")||"[]");
