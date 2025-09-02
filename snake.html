@@ -27,11 +27,10 @@
     display:flex;
     flex-direction:column;
     align-items:center;
-    justify-content:flex-start;
     padding:10px;
   }
   .frame{
-    width:min(900px, 94vw);
+    width:min(900px, 95vw);
     border:2px solid var(--accent);
     border-radius:16px;
     padding:20px;
@@ -63,8 +62,10 @@
   .btn.red{border-color:var(--danger); color:#ffdbe6;}
   #score{margin:6px; font-size:20px}
   canvas{
-    width:min(92vw, 400px);
-    height:min(92vw, 400px);
+    width:95vw;
+    max-width:400px;
+    height:95vw;
+    max-height:400px;
     background:#06191b;
     border:3px solid var(--accent);
     border-radius:12px;
@@ -78,7 +79,6 @@
     font-size:14px;
     opacity:.7;
   }
-  /* Mobile swipe area */
   #touchControls{
     margin-top:12px;
     display:flex;
@@ -86,11 +86,7 @@
     align-items:center;
     gap:6px;
   }
-  .row{
-    display:flex;
-    justify-content:center;
-    gap:6px;
-  }
+  .row{display:flex; justify-content:center; gap:6px;}
   .touchBtn{
     background:#022;
     border:1px solid var(--accent);
@@ -106,7 +102,6 @@
       font-size:32px;
     }
   }
-  /* Article snippet */
   .article-snippet {
     max-width:900px;
     margin:20px auto;
@@ -144,16 +139,12 @@
       <div id="score">Score: 0</div>
       <canvas id="snakeCanvas" width="400" height="400"></canvas>
       <div id="touchControls">
-        <div class="row">
-          <div class="touchBtn" onclick="changeDir('ArrowUp')">⬆️</div>
-        </div>
+        <div class="row"><div class="touchBtn" onclick="changeDir('ArrowUp')">⬆️</div></div>
         <div class="row">
           <div class="touchBtn" onclick="changeDir('ArrowLeft')">⬅️</div>
           <div class="touchBtn" onclick="changeDir('ArrowRight')">➡️</div>
         </div>
-        <div class="row">
-          <div class="touchBtn" onclick="changeDir('ArrowDown')">⬇️</div>
-        </div>
+        <div class="row"><div class="touchBtn" onclick="changeDir('ArrowDown')">⬇️</div></div>
       </div>
       <div style="margin-top:10px;">
         <button class="btn" onclick="togglePause()">⏸ Pause</button>
@@ -163,18 +154,12 @@
     </div>
   </div>
 
-  <!-- Article Section -->
+  <!-- Article / Instructions -->
   <div class="article-snippet">
-    <h2>Snake Arcade: Fun, Focus, and Faith</h2>
-    <p>
-      The classic game of Snake is more than just a fun way to pass time. At Dominion Games, we believe that even simple games can provide moments of focus, challenge, and joy that honor God’s gift of creativity and play. Snake encourages strategic thinking, hand-eye coordination, and careful planning as players navigate the growing snake through the grid without colliding with walls or itself.
-    </p>
-    <p>
-      Playing Snake also teaches patience and persistence. Each attempt is a fresh opportunity to improve, mirroring life’s lessons that growth often comes through repeated effort and learning from mistakes. Whether playing solo or with family nearby, this game promotes wholesome engagement and can be a small but meaningful way to unwind responsibly.
-    </p>
-    <p>
-      Our hope is that games like Snake are not merely distractions, but tools for mental stimulation, relaxation, and even teaching children about focus and patience. With simple rules and increasing challenges, Snake is a timeless game that balances fun with skill development. Dominion Games encourages using play as a way to refresh, recharge, and appreciate the joy God has woven into creation.
-    </p>
+    <h2>How to Play Snake</h2>
+    <p>Use the arrow keys or on-screen buttons to move the snake. Your goal is to eat the red squares (food) and grow longer without hitting the walls or your own tail.</p>
+    <p>Each time the snake eats food, your score increases. Try to get the highest score possible!</p>
+    <p>The game speeds up on higher difficulties. Focus, plan your moves, and enjoy!</p>
   </div>
 
   <!-- AdSense placeholder -->
