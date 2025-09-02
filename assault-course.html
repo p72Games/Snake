@@ -17,10 +17,6 @@ body {
   color: var(--fg);
   font-family: "Courier New", monospace;
   text-align: center;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   padding: 20px;
 }
 h1 {
@@ -32,14 +28,15 @@ h1 {
 #game-container {
   position: relative;
   width: 400px;
+  max-width: 95vw;
   height: 600px;
   background: rgba(0, 0, 0, 0.8);
   border: 2px solid var(--accent);
   border-radius: 8px;
   box-shadow: 0 0 12px var(--accent);
+  margin: 0 auto;
 }
 #game-canvas {
-  display: block;
   width: 100%;
   height: 100%;
 }
@@ -71,10 +68,6 @@ h1 {
   font-size: 24px;
   color: var(--danger);
 }
-#game-over p {
-  margin: 0 0 20px;
-  font-size: 18px;
-}
 #restart-btn {
   background: var(--accent);
   border: 2px solid var(--fg);
@@ -90,40 +83,46 @@ h1 {
   transform: scale(1.05);
   box-shadow: 0 0 10px var(--fg);
 }
-#instructions {
-  font-size: 14px;
-  color: var(--accent);
-  opacity: 0.8;
-  margin-top: 10px;
-  text-align: left;
+.instructions-box {
   max-width: 400px;
+  margin: 20px auto;
+  padding: 15px;
+  background: rgba(0,0,0,0.7);
+  border: 2px solid var(--accent);
+  border-radius: 12px;
+  box-shadow: 0 0 12px var(--accent);
+  text-align: left;
+  line-height: 1.5;
 }
-.button-container {
-  margin-top: 10px;
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  flex-wrap: wrap;
+.instructions-box h2 {
+  margin-top: 0;
+  color: #a0fff2;
+  text-align: center;
 }
-.button-container button {
-  background: var(--accent);
-  border: 2px solid var(--fg);
-  border-radius: 8px;
-  padding: 10px 20px;
-  color: var(--bg);
-  cursor: pointer;
-  font-family: "Courier New", monospace;
+.instructions-box p {
+  color: var(--fg);
+  margin: 0.5em 0;
 }
-.button-container button:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 8px var(--fg);
+.touchBtn {
+  background:#022;
+  border:1px solid var(--accent);
+  padding:28px;
+  border-radius:50%;
+  font-size:26px;
+  color:var(--fg);
+  user-select:none;
+  margin: 8px auto;
+  display: block;
+}
+footer {
+  margin-top: 20px;
+  font-size: 14px;
+  opacity: 0.7;
 }
 a {
   color: var(--accent);
   text-decoration: none;
   font-size: 14px;
-  margin-top: 10px;
-  display: inline-block;
 }
 a:hover {
   text-decoration: underline;
@@ -132,6 +131,7 @@ a:hover {
 </head>
 <body>
 <h1>Assault Course</h1>
+
 <div id="game-container">
   <canvas id="game-canvas" width="400" height="600"></canvas>
   <div id="score">Score: 0 | High: 0</div>
@@ -142,15 +142,17 @@ a:hover {
   </div>
 </div>
 
-<div class="button-container">
-  <button onclick="jump()">Jump</button>
+<div class="instructions-box">
+  <h2>How to Play</h2>
+  <p>Tap the screen or press the Spacebar to make the block jump.</p>
+  <p>Navigate through the gaps in the pillars. Hitting a pillar or falling ends the game.</p>
+  <p>Each gap successfully passed scores 1 point. Try to beat your high score!</p>
+  <p>Mobile players can use the buttons below the instructions to jump easily.</p>
+  <button class="touchBtn" onclick="jump()">⬆️ Jump</button>
 </div>
 
-<p id="instructions">
-Use the jump button or tap/click the screen to help the block pass through the gaps in the pillars. Try to survive as long as possible and score as many points as you can. Keep an eye on the block’s position and anticipate the gaps. Every successful pass increases your score. This game tests your reflexes and timing. The pillars move at a steady speed but gaps vary in size, so adapt your jumps accordingly. Focus on smooth, consistent movements to stay alive. Challenge yourself to beat your high score each session. Remember, staying centered and planning your jumps will maximize your chances. Take breaks if needed, but return and keep improving your skills. With practice, you’ll see your scores climb. Enjoy the game and share it with friends. The simple controls make it easy for anyone to play, and each run is a chance to get better. Keep pushing, and aim for the top of the leaderboard.
-</p>
-
 <a href="index.html">Back to Arcade</a>
+<footer>© Dominion Games</footer>
 
 <script>
 const canvas = document.getElementById('game-canvas');
@@ -169,44 +171,46 @@ const pillarSpeed = 2;
 let frameCount = 0;
 const minGap = 120;
 const maxGap = 280;
-
 let highScore = localStorage.getItem('assaultCourseHighScore') || 0;
 scoreDisplay.textContent = `Score: ${score} | High: ${highScore}`;
 
 function updateHighScore() {
-  if(score > highScore){
+  if (score > highScore) {
     highScore = score;
     localStorage.setItem('assaultCourseHighScore', highScore);
     scoreDisplay.textContent = `Score: ${score} | High: ${highScore}`;
   }
 }
 
-function addPillar(isFirst=false){
-  if(isFirst){
+function addPillar(isFirst = false) {
+  if (isFirst) {
     const gapSize = 220;
-    const gapY = (canvas.height - gapSize)/2;
-    pillars.push({x:canvas.width, gapY, gapSize, passed:false});
+    const gapY = (canvas.height - gapSize) / 2;
+    pillars.push({ x: canvas.width, gapY, gapSize, passed: false });
     return;
   }
-  const gapSize = Math.random()*(maxGap - minGap) + minGap;
+  const gapSize = Math.random() * (maxGap - minGap) + minGap;
   const safeMargin = 60;
   const maxGapY = Math.max(safeMargin, canvas.height - gapSize - safeMargin);
-  const gapY = Math.random()*(maxGapY - safeMargin) + safeMargin;
-  pillars.push({x:canvas.width, gapY, gapSize, passed:false});
+  const gapY = Math.random() * (maxGapY - safeMargin) + safeMargin;
+  pillars.push({ x: canvas.width, gapY, gapSize, passed: false });
 }
 
-function jump(){
-  if(gameRunning){
-    block.velocity = block.jump;
+// Input handling
+function jump() {
+  if (gameRunning) block.velocity = block.jump;
+}
+
+document.addEventListener('keydown', e => {
+  if (e.code === 'Space') {
+    e.preventDefault(); // prevents page scroll
+    jump();
   }
-}
-
-document.addEventListener('keydown',e=>{
-  if(e.code === 'Space') jump();
 });
 canvas.addEventListener('click', jump);
 
-restartBtn.addEventListener('click', ()=>{
+// Restart
+restartBtn.addEventListener('click', () => {
   block.y = 300;
   block.velocity = 0;
   pillars = [];
@@ -219,40 +223,43 @@ restartBtn.addEventListener('click', ()=>{
   gameLoop();
 });
 
-function gameLoop(){
-  if(!gameRunning) return;
-
+// Game loop
+function gameLoop() {
+  if (!gameRunning) return;
   block.velocity += block.gravity;
   block.y += block.velocity;
-  if(block.y + block.size > canvas.height || block.y < 0) return endGame();
+  if (block.y + block.size > canvas.height || block.y < 0) endGame();
 
-  if(frameCount % 90 === 0) addPillar();
-
-  pillars.forEach(pillar=>{
+  if (frameCount % 90 === 0) addPillar();
+  pillars.forEach(pillar => {
     pillar.x -= pillarSpeed;
-    if(block.x + block.size > pillar.x && block.x < pillar.x + pillarWidth &&
-      (block.y < pillar.gapY || block.y + block.size > pillar.gapY + pillar.gapSize)) endGame();
-    if(!pillar.passed && block.x > pillar.x + pillarWidth){
+    if (
+      block.x + block.size > pillar.x &&
+      block.x < pillar.x + pillarWidth &&
+      (block.y < pillar.gapY || block.y + block.size > pillar.gapY + pillar.gapSize)
+    ) endGame();
+
+    if (!pillar.passed && block.x > pillar.x + pillarWidth) {
       score++;
       scoreDisplay.textContent = `Score: ${score} | High: ${highScore}`;
       pillar.passed = true;
     }
   });
+  pillars = pillars.filter(p => p.x + pillarWidth > 0);
 
-  pillars = pillars.filter(p=>p.x + pillarWidth > 0);
-
-  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.fillStyle = '#ff0000';
   ctx.shadowColor = 'var(--fg)';
   ctx.shadowBlur = 10;
   ctx.fillRect(block.x, block.y, block.size, block.size);
   ctx.shadowBlur = 0;
+
   ctx.fillStyle = '#00e5ff';
   ctx.shadowColor = '#00e5ff';
   ctx.shadowBlur = 20;
-  pillars.forEach(p=>{
-    ctx.fillRect(p.x,0,pillarWidth,p.gapY);
-    ctx.fillRect(p.x,p.gapY+p.gapSize,pillarWidth,canvas.height);
+  pillars.forEach(p => {
+    ctx.fillRect(p.x, 0, pillarWidth, p.gapY);
+    ctx.fillRect(p.x, p.gapY + p.gapSize, pillarWidth, canvas.height);
   });
   ctx.shadowBlur = 0;
 
@@ -260,13 +267,14 @@ function gameLoop(){
   requestAnimationFrame(gameLoop);
 }
 
-function endGame(){
+function endGame() {
   gameRunning = false;
   gameOverScreen.style.display = 'block';
   finalScoreDisplay.textContent = score;
   updateHighScore();
 }
 
+// Start game
 addPillar(true);
 gameLoop();
 </script>
